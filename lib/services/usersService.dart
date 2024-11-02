@@ -41,16 +41,30 @@ class AuthService {
     });
 
     try {
-      final response = await http.post(
-        Uri.parse(url),
-        headers: {'Content-Type': 'application/json'},
-        body: body,
-      );
+        final response = await http.post(
+            Uri.parse(url),
+            headers: {'Content-Type': 'application/json'},
+            body: body,
+        );
 
-      return response.statusCode == 200;
+        if (response.statusCode == 201) {
+    try {
+        final responseData = json.decode(response.body);
+        final token = responseData['accessToken']; // Asegúrate de que este campo exista
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('authToken', token);
+        return true; // Registro exitoso
     } catch (e) {
-      print(e);
-      return false;
+        print('Error al decodificar la respuesta: $e');
+        return false;
+    }
+} else {
+    print('Error en registro: ${response.body}');
+    return false; // Registro fallido
+}
+    } catch (e) {
+        print('Error de conexión: $e');
+        return false; // Error de conexión
     }
   }
 }

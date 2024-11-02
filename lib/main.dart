@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:servicios_apis/screens/login_screen.dart';
-import 'package:servicios_apis/screens/products_screen.dart';
-import 'package:servicios_apis/screens/register_screen.dart';
+import 'package:servicios_apis/screens/user_screens/login_screen.dart';
+import 'package:servicios_apis/screens/product_screens/products_screen.dart';
+import 'package:servicios_apis/screens/user_screens/register_screen.dart';
 void main(){
   runApp(const MyApp());
 }
