@@ -6,7 +6,12 @@ class ProductCard extends StatelessWidget {
   final VoidCallback onUpdate;
   final VoidCallback onDelete;
 
-  const ProductCard({super.key, required this.product, required this.onUpdate, required this.onDelete});
+  const ProductCard({
+    super.key,
+    required this.product,
+    required this.onUpdate,
+    required this.onDelete,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +24,7 @@ class ProductCard extends StatelessWidget {
           children: [
             Image.network(
               product.imageUrl,
-              height: 200,
+              height: 250,
               width: double.infinity,
               fit: BoxFit.cover,
             ),

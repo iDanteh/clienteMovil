@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:servicios_apis/components/myTextField.dart';
 import 'package:servicios_apis/components/myButton.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:servicios_apis/services/usersService.dart';
 
 class RegisterPage extends StatelessWidget {
   RegisterPage({super.key});
@@ -10,38 +9,18 @@ class RegisterPage extends StatelessWidget {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final role = "user";
 
   void _onRegisterPressed(BuildContext context) async {
-    const url = "http://192.168.1.79:5000/api/v1/register";
-    final body = jsonEncode({
-      'name': nameController.text,
-      'email': emailController.text,
-      'password': passwordController.text,
-      'role': role
-    });
+    final success = await AuthService.register(
+      nameController.text,
+      emailController.text,
+      passwordController.text,
+    );
 
-    try {
-      final response = await http.post(
-        Uri.parse(url),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: body
-      );
-
-      if (response.statusCode == 200){
-        final responseData = json.decode(response.body);
-        print('Register Successful: ${responseData}');
-
-        //Navigate to Products Page
-        Navigator.pushNamed(context, '/products');
-      } else {
-        print('Error: ${response.body}');
-      }
-    } catch (e) {
-      print(e);
+    if (success) {
+      Navigator.pushNamed(context, '/products');
+    } else {
+      print('Registration failed');
     }
   }
 

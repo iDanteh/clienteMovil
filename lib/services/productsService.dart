@@ -28,4 +28,47 @@ class ProductService {
       throw Exception('Token not found');
     }
   }
+
+  Future<void> updateProduct(Product product) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('authToken');
+
+    if (token != null) {
+      final response = await http.put(
+        Uri.parse('${Constants.baseUrl}/products/${product.id}'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(product.toJson()),
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to update product: ${response.body}');
+      }
+    } else {
+      throw Exception('Token not found');
+    }
+  }
+
+  Future<void> deleteProduct(String productId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('authToken');
+
+    if (token != null) {
+      final response = await http.delete(
+        Uri.parse('${Constants.baseUrl}/products/$productId'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to delete product: ${response.body}');
+      }
+    } else {
+      throw Exception('Token not found');
+    }
+  }
 }

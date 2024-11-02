@@ -1,9 +1,6 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:servicios_apis/components/myTextField.dart';
 import 'package:servicios_apis/components/myButton.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:servicios_apis/services/usersService.dart';
 
 class LoginPage extends StatelessWidget {
@@ -13,39 +10,15 @@ class LoginPage extends StatelessWidget {
   final passwordController = TextEditingController();
 
   void _onLoginPressed(BuildContext context) async {
-    const url = "http://192.168.1.79:5000/api/v1/login";
-    final body = jsonEncode({
-      'email': usernameController.text,
-      'password': passwordController.text
-    });
+    final success = await AuthService.login(
+      usernameController.text,
+      passwordController.text,
+    );
 
-    try {
-      final response = await http.post(
-        Uri.parse(url),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: body
-      );
-
-      if (response.statusCode == 200){
-        final responseData = json.decode(response.body);
-        final token = responseData['accessToken'];
-        print('Login Successful: ${responseData}');
-
-        // Guarda el token
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('authToken', token);
-        print('Token: ${prefs.getString('authToken')}');
-
-        //Navigate to Products Page
-        Navigator.pushNamed(context, '/products');
-      } else {
-        print('Error: ${response.body}');
-      }
-    } catch (e) {
-      print(e);
+    if (success) {
+      Navigator.pushNamed(context, '/products');
+    } else {
+      print('Login failed');
     }
   }
 

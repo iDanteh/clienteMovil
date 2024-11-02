@@ -25,4 +25,16 @@ class Product {
       imageUrl: json['image_url'],
     );
   }
+
+  // Agregar el método toJson para convertir el objeto en JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'description': description,
+      'price': price,
+      'stock': stock,
+      'image_url': imageUrl,
+    };
+  }
 }
