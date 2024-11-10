@@ -29,6 +29,33 @@ class ProductService {
     }
   }
 
+Future<http.Response> createProduct(Product product) async {
+  final prefs = await SharedPreferences.getInstance();
+  final token = prefs.getString('authToken');
+
+  if (token != null) {
+    final response = await http.post(
+      Uri.parse('${Constants.baseUrl}/products'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'name': product.name,
+        'description': product.description,
+        'price': product.price,
+        'stock': product.stock,
+        'category_id': product.categoryId,
+        'image_url': product.imageUrl,
+      }),
+    );
+
+    return response; // Retornar el response para evaluar el status code
+  } else {
+    throw Exception('Token not found');
+  }
+}
+
   Future<void> updateProduct(Product product) async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('authToken');
@@ -59,24 +86,23 @@ class ProductService {
     }
   }
 
-  Future<void> deleteProduct(String productId) async {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('authToken');
+  Future<http.Response> deleteProduct(String productId) async {
+  final prefs = await SharedPreferences.getInstance();
+  final token = prefs.getString('authToken');
 
-    if (token != null) {
-      final response = await http.delete(
-        Uri.parse('${Constants.baseUrl}/products/$productId'),
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
-      );
+  if (token != null) {
+    final response = await http.delete(
+      Uri.parse('${Constants.baseUrl}/products/$productId'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+    );
 
-      if (response.statusCode != 200) {
-        throw Exception('Failed to delete product: ${response.body}');
-      }
-    } else {
-      throw Exception('Token not found');
-    }
+    return response; // Retornar el response para verificar el status code
+  } else {
+    throw Exception('Token not found');
   }
+}
+
 }

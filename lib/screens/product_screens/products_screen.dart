@@ -4,6 +4,7 @@ import 'package:servicios_apis/components/navbar.dart';
 import 'package:servicios_apis/widgets/product_card.dart';
 import 'package:servicios_apis/services/productsService.dart';
 import 'package:servicios_apis/screens/product_screens/updateProduct_screen.dart';
+import 'package:servicios_apis/components/confirmationDialog.dart';
 
 class ProductsPage extends StatefulWidget {
   const ProductsPage({super.key});
@@ -51,8 +52,33 @@ class _ProductsPageState extends State<ProductsPage> {
   }
 
   void _deleteProduct(Product product) {
-    // Lógica para eliminar el producto
-  }
+  ConfirmationDialog.show(
+    context,
+    title: 'Confirmar eliminación',
+    content: '¿Estás seguro de que deseas eliminar este producto?',
+    onConfirm: () async {
+      try {
+        final productService = ProductService();
+        final response = await productService.deleteProduct(product.id.toString());
+
+        if (response.statusCode == 200 || response.statusCode == 204) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Producto eliminado exitosamente')),
+          );
+          _fetchProducts(); // Refresca la lista de productos
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error al eliminar el producto: ${response.body}')),
+          );
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Excepción al eliminar el producto: $e')),
+        );
+      }
+    },
+  );
+}
 
   @override
   Widget build(BuildContext context) {
@@ -75,8 +101,8 @@ class _ProductsPageState extends State<ProductsPage> {
                   return ProductCard(
                     context: context,
                     product: filteredProducts[index],
-                    onUpdate: () => _navigateToUpdateProduct(filteredProducts[index]), // Proporciona el onUpdate
-                    onDelete: () => _deleteProduct(filteredProducts[index]), // Proporciona el onDelete
+                    onUpdate: () => _navigateToUpdateProduct(filteredProducts[index]),
+                    onDelete: () => _deleteProduct(filteredProducts[index]),
                   );
                 },
               ),

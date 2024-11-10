@@ -1,5 +1,5 @@
 class Product {
-  final int id;
+  final int? id;
   final String name;
   final String description;
   final String price; // Ajuste para que price sea un String
@@ -8,7 +8,7 @@ class Product {
   final String imageUrl;
 
   Product({
-    required this.id,
+    this.id,
     required this.name,
     required this.description,
     required this.price,
