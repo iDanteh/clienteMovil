@@ -40,10 +40,18 @@ class ProductService {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
         },
-        body: jsonEncode(product.toJson()),
+        body: jsonEncode({
+        'name': product.name,
+        'description': product.description,
+        'price': product.price,
+        'stock': product.stock,
+        'category_id': product.categoryId,
+        'image_url': product.imageUrl,
+      }),
       );
 
       if (response.statusCode != 200) {
+        print('Error al actualizar el producto: ${response.body}');
         throw Exception('Failed to update product: ${response.body}');
       }
     } else {

@@ -3,6 +3,7 @@ import 'package:servicios_apis/models/product_Model.dart';
 import 'package:servicios_apis/components/navbar.dart';
 import 'package:servicios_apis/widgets/product_card.dart';
 import 'package:servicios_apis/services/productsService.dart';
+import 'package:servicios_apis/screens/product_screens/updateProduct_screen.dart';
 
 class ProductsPage extends StatefulWidget {
   const ProductsPage({super.key});
@@ -39,8 +40,14 @@ class _ProductsPageState extends State<ProductsPage> {
   }
 
   // Métodos para manejar la actualización y eliminación de productos
-  void _updateProduct(Product product) {
-    // Lógica para actualizar el producto
+  Future<void> _navigateToUpdateProduct(Product product) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => UpdateProduct(product: product),
+      ),
+    );
+    _fetchProducts(); // Refresca la lista de productos después de la actualización
   }
 
   void _deleteProduct(Product product) {
@@ -58,18 +65,22 @@ class _ProductsPageState extends State<ProductsPage> {
         ),
       ),
       backgroundColor: Colors.grey[350],
-      body: filteredProducts.isEmpty
-          ? const Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: filteredProducts.length,
-              itemBuilder: (context, index) {
-                return ProductCard(
-                  product: filteredProducts[index],
-                  onUpdate: () => _updateProduct(filteredProducts[index]), // Proporciona el onUpdate
-                  onDelete: () => _deleteProduct(filteredProducts[index]), // Proporciona el onDelete
-                );
-              },
-            ),
+      body: RefreshIndicator(
+        onRefresh: _fetchProducts, // Este método se llama al hacer el gesto de pull-to-refresh
+        child: filteredProducts.isEmpty
+            ? const Center(child: CircularProgressIndicator())
+            : ListView.builder(
+                itemCount: filteredProducts.length,
+                itemBuilder: (context, index) {
+                  return ProductCard(
+                    context: context,
+                    product: filteredProducts[index],
+                    onUpdate: () => _navigateToUpdateProduct(filteredProducts[index]), // Proporciona el onUpdate
+                    onDelete: () => _deleteProduct(filteredProducts[index]), // Proporciona el onDelete
+                  );
+                },
+              ),
+      ),
     );
   }
 }

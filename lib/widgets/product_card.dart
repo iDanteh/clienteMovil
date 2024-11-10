@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:servicios_apis/models/product_Model.dart';
+import 'package:servicios_apis/screens/product_screens/updateProduct_screen.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
   final VoidCallback onUpdate;
   final VoidCallback onDelete;
+  final BuildContext context;
 
   const ProductCard({
     super.key,
     required this.product,
     required this.onUpdate,
     required this.onDelete,
+    required this.context,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build( context) {
     return Card(
       margin: const EdgeInsets.all(10),
       child: Padding(
@@ -53,9 +56,18 @@ class ProductCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton.icon(
-                  onPressed: onUpdate,
+                  onPressed: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => UpdateProduct(
+                          product: product,
+                        ),
+                      ),
+                    );
+                  },
                   icon: const Icon(Icons.edit, color: Colors.white70),
-                  label: const Text('Actualizar', style: TextStyle(color: Colors.white70)),
+                  label: const Text('Editar', style: TextStyle(color: Colors.white70)),
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.grey[600]),
                 ),
                 ElevatedButton.icon(
