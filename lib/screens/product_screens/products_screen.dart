@@ -5,6 +5,7 @@ import 'package:servicios_apis/widgets/product_card.dart';
 import 'package:servicios_apis/services/productsService.dart';
 import 'package:servicios_apis/screens/product_screens/updateProduct_screen.dart';
 import 'package:servicios_apis/components/confirmationDialog.dart';
+import 'package:servicios_apis/screens/payment_creens/description_product.dart';
 
 class ProductsPage extends StatefulWidget {
   const ProductsPage({super.key});
@@ -40,7 +41,7 @@ class _ProductsPageState extends State<ProductsPage> {
     });
   }
 
-  // Métodos para manejar la actualización y eliminación de productos
+  // Métodos para manejar la actualización, eliminación y simulación de compra de productos
   Future<void> _navigateToUpdateProduct(Product product) async {
     await Navigator.push(
       context,
@@ -49,6 +50,16 @@ class _ProductsPageState extends State<ProductsPage> {
       ),
     );
     _fetchProducts(); // Refresca la lista de productos después de la actualización
+  }
+
+  Future<void> _navigateToDescriptionProduct(Product product) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DescriptionProduct(product: product),
+        ),
+    );
+    _fetchProducts();
   }
 
   void _deleteProduct(Product product) {
@@ -103,6 +114,7 @@ class _ProductsPageState extends State<ProductsPage> {
                     product: filteredProducts[index],
                     onUpdate: () => _navigateToUpdateProduct(filteredProducts[index]),
                     onDelete: () => _deleteProduct(filteredProducts[index]),
+                    onShop: () => _navigateToDescriptionProduct(filteredProducts[index]),
                   );
                 },
               ),

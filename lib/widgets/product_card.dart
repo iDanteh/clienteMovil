@@ -6,6 +6,7 @@ class ProductCard extends StatelessWidget {
   final Product product;
   final VoidCallback onUpdate;
   final VoidCallback onDelete;
+  final VoidCallback onShop;
   final BuildContext context;
 
   const ProductCard({
@@ -13,6 +14,7 @@ class ProductCard extends StatelessWidget {
     required this.product,
     required this.onUpdate,
     required this.onDelete,
+    required this.onShop,
     required this.context,
   });
 
@@ -55,26 +57,70 @@ class ProductCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ElevatedButton.icon(
-                  onPressed: (){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => UpdateProduct(
-                          product: product,
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UpdateProduct(
+                            product: product,
+                          ),
                         ),
+                      );
+                    },
+                    icon: const Icon(Icons.edit, color: Colors.white),
+                    label: const Text(
+                      'Editar',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14, // Tamaño de texto más grande
+                        fontWeight: FontWeight.bold, // Negrita para mejor legibilidad
                       ),
-                    );
-                  },
-                  icon: const Icon(Icons.edit, color: Colors.white70),
-                  label: const Text('Editar', style: TextStyle(color: Colors.white70)),
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.grey[600]),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blueGrey, // Fondo oscuro para buen contraste
+                      padding: const EdgeInsets.symmetric(vertical: 12), // Más altura
+                    ),
+                  ),
                 ),
-                ElevatedButton.icon(
-                  onPressed: onDelete,
-                  icon: const Icon(Icons.delete, color: Colors.white70),
-                  label: const Text('Eliminar', style: TextStyle(color: Colors.white70)),
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.grey[600]),
+                const SizedBox(width: 5), // Espaciado entre botones
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: onDelete,
+                    icon: const Icon(Icons.delete, color: Colors.white),
+                    label: const Text(
+                      'Eliminar',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.redAccent, // Color rojo para indicar acción de eliminación
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 5), // Espaciado entre botones
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: onShop,
+                    icon: const Icon(Icons.payment, color: Colors.white),
+                    label: const Text(
+                      'Comprar',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 152, 216, 154), // Verde para acción positiva
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    ),
+                  ),
                 ),
               ],
             ),
