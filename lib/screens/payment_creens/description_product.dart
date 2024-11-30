@@ -104,7 +104,7 @@ class _DescriptionProductState extends State<DescriptionProduct> {
                       borderRadius: BorderRadius.circular(12.0),
                     ),
                   ),
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.text,
                 ),
                 const SizedBox(height: 20),
                 TextField(
