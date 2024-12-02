@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:servicios_apis/screens/product_screens/createProduct_screen.dart';
+import 'package:servicios_apis/screens/company_screens/create_company.dart';
 
 class Navbar extends StatelessWidget {
   final TextEditingController searchController;
@@ -42,6 +43,14 @@ class Navbar extends StatelessWidget {
           onPressed: () {
             Navigator.push(context, 
             MaterialPageRoute(builder: (context) => CreateProduct()),
+            );
+          },
+        ),
+        IconButton(
+          icon: const Icon(Icons.store),
+          onPressed: () {
+            Navigator.push(context, 
+            MaterialPageRoute(builder: (context) => CreateCompany()),
             );
           },
         ),
