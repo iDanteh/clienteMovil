@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:servicios_apis/screens/product_screens/createProduct_screen.dart';
 import 'package:servicios_apis/screens/company_screens/create_company.dart';
+import 'package:servicios_apis/screens/user_screens/update_User.dart';
 
 class Navbar extends StatelessWidget {
   final TextEditingController searchController;
@@ -16,9 +17,12 @@ class Navbar extends StatelessWidget {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text(
-            'Ecommerce',
-            style: TextStyle(fontSize: 20),
+          IconButton(icon: Icon(Icons.supervised_user_circle),
+          onPressed: () {
+            Navigator.push(context, 
+            MaterialPageRoute(builder: (context) => UpdateUser())
+            );
+          }
           ),
           Expanded(
             child: Padding(

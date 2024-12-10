@@ -11,18 +11,21 @@ class RegisterPage extends StatelessWidget {
   final passwordController = TextEditingController();
 
   void _onRegisterPressed(BuildContext context) async {
-    final success = await AuthService.register(
-      nameController.text,
-      emailController.text,
-      passwordController.text,
-    );
+  final success = await AuthService.register(
+    nameController.text,
+    emailController.text,
+    passwordController.text,
+  );
 
-    if (success) {
-      Navigator.pushNamed(context, '/products');
-    } else {
-      print('Registration failed');
-    }
+  print("Registration success: $success"); // Verifica que sea true
+
+  if (success) {
+    Navigator.pushReplacementNamed(context, '/products');
+  } else {
+    print('Registration failed');
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
